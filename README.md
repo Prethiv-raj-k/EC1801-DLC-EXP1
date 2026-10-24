@@ -20,11 +20,67 @@ exp1_boolean_min_tb.v	Verilog testbench
 exp1_boolean_min.vcd	VCD waveform dump generated during simulation
 
 ## Verilog Program
-
+```
+module boolfun (
+input wire A, 
+input wire B, 
+input wire C, 
+input wire D, 
+output wire F 
+); 
+assign F = (~B & ~D)|(B & D) ;    // F = B'D' + BD 
+endmodule
+```
 
 
 ## TestBench Program
+```
+module boolfun_tb;
 
+reg A, B, C, D;
+wire F;
+
+boolfun uut (
+    .A(A),
+    .B(B),
+    .C(C),
+    .D(D),
+    .F(F)
+);
+
+initial begin
+
+    $dumpfile("boolfun.vcd");
+    $dumpvars(0, boolfun_tb);
+
+    $monitor("Time=%0t A=%b B=%b C=%b D=%b F=%b",
+              $time, A, B, C, D, F);
+
+    A=0; B=0; C=0; D=0; #10;
+    A=0; B=0; C=0; D=1; #10;
+    A=0; B=0; C=1; D=0; #10;
+    A=0; B=0; C=1; D=1; #10;
+
+    A=0; B=1; C=0; D=0; #10;
+    A=0; B=1; C=0; D=1; #10;
+    A=0; B=1; C=1; D=0; #10;
+    A=0; B=1; C=1; D=1; #10;
+
+    A=1; B=0; C=0; D=0; #10;
+    A=1; B=0; C=0; D=1; #10;
+    A=1; B=0; C=1; D=0; #10;
+    A=1; B=0; C=1; D=1; #10;
+
+    A=1; B=1; C=0; D=0; #10;
+    A=1; B=1; C=0; D=1; #10;
+    A=1; B=1; C=1; D=0; #10;
+    A=1; B=1; C=1; D=1; #10;
+
+    $finish;
+end
+
+endmodule
+```
 
 
 
@@ -78,31 +134,13 @@ o	F
 The waveform should agree with the truth table.
  
 ### Expected Result
-The Boolean function
-F(A,B,C,D)=Σm(0,2,5,7,8,10,13,15), which simplifies to F=B'D'+BD.
-was minimized to F=B'D'+BD.
-and successfully implemented using Verilog HDL.
+<img width="1600" height="790" alt="image" src="https://github.com/user-attachments/assets/0194336d-0d66-428b-8e68-3af6def6ffb5" />
 
 ## OUTPUT
+<img width="1899" height="988" alt="Screenshot 2026-10-24 130014" src="https://github.com/user-attachments/assets/394ed6ba-fb3a-4d4e-94ac-177d54d6f74f" />
 
 
 
-The design was compiled and simulated using Synopsys VCS, and the functionality was verified using DVE waveform analysis.
-7. Viva-Voce Questions
-1.	What is Boolean function minimization?
-2.	What is a minterm?
-3.	What is a Karnaugh map?
-4.	Why is Boolean minimization required?
-5.	What are universal gates?
-6.	What is the difference between SOP and POS?
-7.	What is the purpose of a Verilog testbench?
-8.	Why is a VCD file generated?
-9.	What is the purpose of ./simv?
-10.	What is the purpose of DVE?
-11.	What is the difference between simulation and synthesis?
-12.	Why are A and C absent from the minimized expression?
-13.	What is the purpose of $dumpfile?
-14.	What is the purpose of $dumpvars?
 
 Result
 Thus, the Boolean function was minimized, implemented using Verilog HDL, successfully simulated using Synopsys VCS, and verified using Synopsys DVE.
